@@ -1,0 +1,91 @@
+<html>
+    <head>
+        <title>SLwatch!</title>
+        <meta charset="UTF-8">
+        <meta name="description" content="Dario Rostirolla">
+        <meta name="keywords" content="HTML, CSS">
+        <meta name="author" content="Dario Rostirolla">
+        <meta name=viewport content="width=device-width, initial-scale=1">
+    </head>
+    <body>
+        <h1 align="center">SLwatch settings!</h1>
+        <form name="form"> 
+            Max search area (in m, min: 25, max:2000):
+            <input type="number" name="mAarea" min="25" max="2000" value="25">
+            <br>
+            Max search results (min: 5, max: 1000):
+            <input type="number" name="mResults" min="5" max="1000" value="5"> 
+            <br>
+            Language: 
+            <input type="radio" name="lang" value="true">Swedish
+            <input type="radio" name="lang" value="false" checked>English
+	    <br><br>
+            <input type="button" value="Save" onclick="JavaScript:formJSSubmit()" style="margin: 0 auto; display:block;">
+        </form>
+	<script>
+	var str = decodeURI(window.location.href);
+	if (str.indexOf('settings?') != -1 && str.indexOf('#{\"mArea') != -1){
+		var temp1, temp2, temp3;
+		str = str.substr(0, str.indexOf('#{\"mArea'));
+		str = str.substr(str.indexOf("settings?mArea=")+15);
+		str = str.replace("&mResults=", " ");
+                str = str.replace("&lang=", " ");
+                temp1 = str.substring(0, str.indexOf(" "));
+                temp2 = str.substring(str.indexOf(" ")+1, str.lastIndexOf(" "));
+                temp3 = str.substring(str.lastIndexOf(" ")+1, str.length);
+                document.forms["form"]["mAarea"].value = temp1;
+                document.forms["form"]["mResults"].value = temp2;
+                if (temp3 === 'true'){
+                document.forms["form"]["lang"][0].checked = true;
+                } else {
+                document.forms["form"]["lang"][1].checked = true;
+                }
+	} else if (str.indexOf('settings.html?') != -1 && str.indexOf('#{\"mArea') != -1){
+		var temp1, temp2, temp3;
+		str = str.substr(0, str.indexOf('#{\"mArea'));
+		str = str.substr(str.indexOf("settings.html?mArea=")+20);
+		str = str.replace("&mResults=", " ");
+		str = str.replace("&lang=", " ");
+		temp1 = str.substring(0, str.indexOf(" "));
+		temp2 = str.substring(str.indexOf(" ")+1, str.lastIndexOf(" "));
+		temp3 = str.substring(str.lastIndexOf(" ")+1, str.length);
+		document.forms["form"]["mAarea"].value = temp1;
+                document.forms["form"]["mResults"].value = temp2;
+                if (temp3 === 'true'){
+                document.forms["form"]["lang"][0].checked = true;
+                } else {
+                document.forms["form"]["lang"][1].checked = true;
+                }
+	} else if (str.indexOf('settings?mArea=') != -1 || str.indexOf('settings.html?mArea=') != -1){
+		var temp1, temp2, temp3;
+		str = str.substr(str.indexOf("?mArea=")+7);
+		str = str.replace("&mResults=", " ");
+		str = str.replace("&lang=", " ");
+		temp1 = str.substring(0, str.indexOf(" "));
+		temp2 = str.substring(str.indexOf(" ")+1, str.lastIndexOf(" "));
+		temp3 = str.substring(str.lastIndexOf(" ")+1, str.length);
+		document.forms["form"]["mAarea"].value = temp1;
+		document.forms["form"]["mResults"].value = temp2;
+		if (temp3 === 'true'){
+		document.forms["form"]["lang"][0].checked = true;
+		} else {
+		document.forms["form"]["lang"][1].checked = true;
+		}
+	}	
+	</script>
+
+    </body>
+    <script type="text/javascript">
+        function formJSSubmit() {
+            var marea = document.forms["form"]["mAarea"].value;
+            var mresults = document.forms["form"]["mResults"].value;
+            if (document.forms["form"]["lang"][0].checked) {
+                var sweLang = document.forms["form"]["lang"][0].value;
+            } else {
+                var sweLang = document.forms["form"]["lang"][1].value;
+            }
+            var options = {mArea: marea, mResults: mresults, Lang: sweLang};
+            document.location = 'pebblejs://close#' + encodeURIComponent(JSON.stringify(options));
+        }
+    </script>
+</html>
